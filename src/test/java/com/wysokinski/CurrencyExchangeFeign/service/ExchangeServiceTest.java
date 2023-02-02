@@ -6,10 +6,10 @@ import com.wysokinski.CurrencyExchangeFeign.DTO.CodeName;
 import com.wysokinski.CurrencyExchangeFeign.client.FeignClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -18,9 +18,9 @@ import java.util.Date;
 
 @SpringBootTest
 class ExchangeServiceTest {
-    @Autowired
+    @InjectMocks
     private ExchangeService exchangeService;
-    @MockBean
+    @Mock
     private FeignClient feignClient;
 
     @Test
