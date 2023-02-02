@@ -15,22 +15,21 @@ import java.math.RoundingMode;
 public class ExchangeService {
     private final FeignClient feignClient;
     private static final BigDecimal COMMISSION_VALUE = BigDecimal.valueOf(0.02);
-public String exchangeCurrency(CodeName ownedCurrencyCode, CodeName destinationCurrencyCode, BigDecimal amount){
+public BigDecimal exchangeCurrency(CodeName ownedCurrencyCode, CodeName destinationCurrencyCode, BigDecimal amount){
 
     if (ownedCurrencyCode == destinationCurrencyCode){
-        return "Trying to convert the same currency";
+        throw  new NullPointerException("Trying to convert the same currency");
     }
     if (amount.signum()!= 1){
-        return "amount value is not positive";
+        throw new ArithmeticException("Amount value is not positive") ;
     }
     if (destinationCurrencyCode == CodeName.PLN){
 
-        return "Exchanged "+ amount+" "+ ownedCurrencyCode+ " to "+buyPLN(ownedCurrencyCode,commissionAmount(amount))+" PLN.";
+        return buyPLN(ownedCurrencyCode,commissionAmount(amount));
     }else if (ownedCurrencyCode == CodeName.PLN) {
-        return "Exchanged "+ amount+" "+ ownedCurrencyCode+ " to "+buyCurrent(destinationCurrencyCode,commissionAmount(amount))+" "+destinationCurrencyCode+".";
+        return buyCurrent(destinationCurrencyCode,commissionAmount(amount));
     }else {
-        return "Exchanged "+ amount+" "+ ownedCurrencyCode+ " to "+buyCurrent(destinationCurrencyCode,buyPLN(ownedCurrencyCode,commissionAmount(amount)))+
-                    " "+destinationCurrencyCode+".";
+        return buyCurrent(destinationCurrencyCode,buyPLN(ownedCurrencyCode,commissionAmount(amount)));
         }
     }
     private BigDecimal buyPLN(CodeName codeName, BigDecimal amount) {
@@ -44,6 +43,6 @@ public String exchangeCurrency(CodeName ownedCurrencyCode, CodeName destinationC
         }
     private BigDecimal commissionAmount(BigDecimal amount){
 
-    return amount != null ? amount.multiply(COMMISSION_VALUE.add(BigDecimal.ONE)).setScale(2,RoundingMode.CEILING) : null;
+    return amount != null ? amount.multiply(BigDecimal.ONE.subtract(COMMISSION_VALUE)).setScale(2,RoundingMode.CEILING) : null;
     }
     }

@@ -19,7 +19,7 @@ public class ExchangeController {
 //        return exchangeService.getExchangesRates(codeName.convert(stringName));
 //    }
     @RequestMapping(value = "/getExchangeRates/{from}/{to}/{amount}",method = RequestMethod.GET)
-    public String exchange(@PathVariable("from") String from, @PathVariable("to") String to, @PathVariable("amount")BigDecimal amount){
+    public BigDecimal exchange(@PathVariable("from") String from, @PathVariable("to") String to, @PathVariable("amount")BigDecimal amount){
         return exchangeService.exchangeCurrency(codeName.convert(from),codeName.convert(to),amount);
     }
 
